@@ -172,9 +172,9 @@ app.post("/MYSCORE",(req,res)=>{
     successfree=req.body.successfree
   
     li=""
-
-
-    if(isNaN(height) || isNaN(weight) || isNaN(successfield) || isNaN(successfree)){
+    if(height<5 || weight<60 || successfield<10 || successfree<10 ){
+        li=li+"0"
+    }else if(isNaN(height) || isNaN(weight) || isNaN(successfield) || isNaN(successfree)){
         li=li+"ONLY INTEGER IS ACCEPTED!!"
     
     }
