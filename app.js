@@ -227,7 +227,7 @@ res.send(`<!DOCTYPE HTML>
 <input class="ipt" type="text" placeholder="name(optional)" name="Name" maxlength="20" autocomplete="off"><br>
     
     <input class="ipt" type="text" placeholder="height in ft" name="height" maxlength="3" autocomplete="off" required><br>
-    <input class="ipt" type="text" placeholder="weight in KG" name="weight" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
+    <input class="ipt" type="text" placeholder="weight in kg" name="weight" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
     <input class="ipt" type="text"  placeholder="total feild baskets made/(100)" name="successfields" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
     <input class="ipt" type="text"   placeholder="total freethrows made/(100)" name="successfree" maxlength="2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
     
@@ -272,7 +272,7 @@ usersCollection.insertOne(user)
      <input class="ipt" type="text" placeholder="name(optional)" name="Name" maxlength="20" autocomplete="off"><br>
     
      <input class="ipt" type="text" placeholder="height in ft" name="height" maxlength="3" autocomplete="off" required><br>
-     <input class="ipt" type="text" placeholder="weight in KG" name="weight" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
+     <input class="ipt" type="text" placeholder="weight in kg" name="weight" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
      <input class="ipt" type="text"  placeholder="total feild baskets made/(100)" name="successfields" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
      <input class="ipt" type="text"   placeholder="total freethrows made/(100)" name="successfree" maxlength="2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
      
