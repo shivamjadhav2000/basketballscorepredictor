@@ -201,11 +201,11 @@ app.post("/MYSCORE",(req,res)=>{
         li=Number((li).toFixed(0))
     }
 
-    let img="/poor.PNG"
+    let img="/sad.PNG"
     if (li>0 && li<8){
-        img="/average.PNG"
+        img="/avg.PNG"
     } else if(li>8){
-        img="/awesome.PNG"
+        img="/good.PNG"
     }  
     
    
