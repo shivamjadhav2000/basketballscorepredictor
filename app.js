@@ -216,8 +216,7 @@ res.send(`<!DOCTYPE HTML>
 <html>
 <head>
     <link rel="stylesheet" href="/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+ </head>
 <body>
 <header style="text-align: center; color:rgba(255, 255, 255, 0.87)"><h1>BasketBall Score Predictor</h1></header>
 
@@ -260,8 +259,7 @@ usersCollection.insertOne(user)
     <html>
     <head>
         <link rel="stylesheet" href="/style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
+       </head>
     <body>
     <header style="text-align: center;color:rgba(255, 255, 255, 0.87)"><h1>BasketBall Score Predictor</h1></header>
 
