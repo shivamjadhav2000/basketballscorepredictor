@@ -236,7 +236,7 @@ res.send(`<!DOCTYPE HTML>
 </form></div>
 <div class="opt">
 
-<img id="imgg" src=${img} width="150">
+<img id="imgg" src="nba.png" width="150">
  
 <h2 id="target">${li}<h2>
 
@@ -280,7 +280,7 @@ usersCollection.insertOne(user)
     </form></div>
     <div class="opt">
     <h1 style="color:rgba(243, 175, 72, 0.589)">YOUR PREDICTED SCORE IS</h1>
-<img id="imgg" src=${img} width="150">
+<img id="imgg" src="nba.png" width="150">
     <h1 id="target">${li}<h1>
     
     </div></div>
