@@ -5,11 +5,8 @@ app.use(express.json())
 app.use(express.static("public"))
 app.set('views','views')
 app.set('view engine','ejs')
-let port=process.env.PORT
-if(port==null || port==""){
-    port=3000
-}
 
+const usersCollection=require('./db').collection("users")
 
 app.get("/",(req,res)=>{
 res.render("index.ejs") 
@@ -160,36 +157,58 @@ app.post("/MYSCORE",(req,res)=>{
     
         return constants;
     }
-
-   
+    req.body.Name=req.body.Name.trim()
+   if(Number(req.body.Name)){
+       req.body.Name=""
+   }
+   let user={}
+   if(req.body.Name.length){
+       user={
+           Name:req.body.Name,
+           height:parseFloat(req.body.height),
+       
+           weight:Number(req.body.weight*2.2046226218),
+           successfield:req.body.successfields,
+           successfree:req.body.successfree,
+}
+   }
+   else{
+    user={
+    height:parseFloat(req.body.height),
+  
+    weight:Number(req.body.weight*2.2046226218),
+    successfield:req.body.successfields,
+    successfree:req.body.successfree,
+}
+}
 
     let coeff=regression(data)
-    height=req.body.height;
-    height=parseFloat(height)
-    weight=req.body.weight*2.2046226218;
-    weight=Number(weight)
-    successfield=req.body.successfields
-    successfree=req.body.successfree
-  
     li=""
-    if(height<5 || weight<60 || successfield<10 || successfree<10 ){
+    if(user.height<5 || user.weight<60 || user.successfield<10 || user.successfree<10 ){
         li=li+"0"
-    }else if(isNaN(height) || isNaN(weight) || isNaN(successfield) || isNaN(successfree)){
+    }else if(isNaN(user.height) || isNaN(user.weight) || isNaN(user.successfield) || isNaN(user.successfree)){
         li=li+"ONLY INTEGER IS ACCEPTED!!"
     
     }
-    else if(height.length==0 || weight.length==0 || successfree.length==0 ||successfield.length==0){
+    else if(user.height.length==0 || user.weight.length==0 || user.successfree.length==0 ||user.successfield.length==0){
         li=li+"MUST ENTER THE INPUT FIELDS!!"
     }
-    else if(weight>=350){
+    else if(user.weight>=350){
         li=li+"MUST ENTER A VALID WEIGHT!!"
     }
     else {
-        li=coeff[1]*height+coeff[2]*weight+coeff[3]*(Number(successfield)/100)+coeff[4]*(Number(successfree)/100)+coeff[0]+3
+        li=coeff[1]*user.height+coeff[2]*user.weight+coeff[3]*(Number(user.successfield)/100)+coeff[4]*(Number(user.successfree)/100)+coeff[0]+3
         li=Number((li).toFixed(0))
     }
 
+    let img="/poor.PNG"
+    if (li>0 && li<8){
+        img="/average.PNG"
+    } else if(li>8){
+        img="/awesome.PNG"
+    }  
     
+   
 if(isNaN(li)){
 
 res.send(`<!DOCTYPE HTML>
@@ -197,22 +216,28 @@ res.send(`<!DOCTYPE HTML>
 <html>
 <head>
     <link rel="stylesheet" href="/style.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<header style="text-align: center; color:rgba(255, 255, 255, 0.87)"><h1>BasketBall Score Predictor</h1></header>
+
     <div class="lay">
- <div>   
+ <div>  
+   
 <form id="frm" action="/pred" method="POST">
+<input class="ipt" type="text" placeholder="name(optional)" name="Name" maxlength="20" autocomplete="off"><br>
+     
 <input class="ipt" type="text" placeholder="height in ft" name="height" maxlength="3" autocomplete="off" required><br>
 <input class="ipt" type="text" placeholder="weight" name="weight" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
-<input class="ipt" type="text"  placeholder="Enter successfields baskets /(100)" name="successfields" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
-<input class="ipt" type="text"   placeholder="Enter success free throws /(100)" name="successfree" maxlength="2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
+<input class="ipt" type="text"  placeholder="total feild baskets made/(100)" name="successfields" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
+<input class="ipt" type="text"   placeholder="total freethrows made/(100)" name="successfree" maxlength="2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
 
     <button id="btn">PREDICT</button>
 </form></div>
 <div class="opt">
 
-
+<img id="imgg" src=${img} width="150">
+ 
 <h2 id="target">${li}<h2>
 
 </div></div>
@@ -228,27 +253,34 @@ res.send(`<!DOCTYPE HTML>
 </footer>
 </html>`)}
 else{
+    
+usersCollection.insertOne(user)
     res.send(`<!DOCTYPE HTML>
 
     <html>
     <head>
         <link rel="stylesheet" href="/style.css">
-    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+    <header style="text-align: center;color:rgba(255, 255, 255, 0.87)"><h1>BasketBall Score Predictor</h1></header>
+
         <div class="lay">
      <div>   
-    <form id="frm" action="/MYSCORE" method="POST">
+   
+     <form id="frm" action="/MYSCORE" method="POST">
+    <input class="ipt" type="text" placeholder="name(optional)" name="Name" maxlength="20" autocomplete="off"><br>
+    
     <input class="ipt" type="text" placeholder="height in ft" name="height" maxlength="3" autocomplete="off" required><br>
     <input class="ipt" type="text" placeholder="weight" name="weight" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
-    <input class="ipt" type="text"  placeholder="Enter successfields baskets /(100)" name="successfields" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
-    <input class="ipt" type="text"   placeholder="Enter success free throws /(100)" name="successfree" maxlength="2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
+    <input class="ipt" type="text"  placeholder="total feild baskets made/(100)" name="successfields" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
+    <input class="ipt" type="text"   placeholder="total freethrows made/(100)" name="successfree" maxlength="2" onkeypress='return event.charCode >= 48 && event.charCode <= 57' autocomplete="off" required><br>
     
         <button id="btn">PREDICT</button>
     </form></div>
     <div class="opt">
     <h1 style="color:rgba(243, 175, 72, 0.589)">YOUR PREDICTED SCORE IS</h1>
-<img id="imgg" src="/nba.png" width="150">
+<img id="imgg" src=${img} width="150">
     <h1 id="target">${li}<h1>
     
     </div></div>
@@ -276,4 +308,4 @@ else{
 }
 
 })
-app.listen(port)
+module.exports=app
